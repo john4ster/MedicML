@@ -16,18 +16,22 @@ with open('pickle-files/tfidf-vectorizer.pkl', 'rb') as vectorizer_file:
 
 # Load the pickled label encoder
 with open('pickle-files/label-encoder.pkl', 'rb') as encoder_file:
-    label_encoder_train = pickle.load(encoder_file)
+    label_encoder = pickle.load(encoder_file)
 
+
+
+# Route to home
 @app.route('/')
 def home():
     return "Welcome to the MedicalAssist API"
 
-# Route to get prediction given symptom description
+# Route to get prediction given symptom description and the number of predictions to return
 @app.route('/get_prediction', methods=['POST'])
 def get_prediction():
-    # Get symptom description from request
-    symptom_description = request.json['symptom_description']
-    
+    # Get symptom description and number of predictions wanted from request
+    symptom_description = request.json['symptomDescription']
+    num_predictions = request.json['topN'] # Number of predictions to return
+
     # Preprocess the input data using the vectorizer
     symptoms_tfidf = vectorizer.transform([symptom_description])
     symptoms_tensor = torch.tensor(symptoms_tfidf.toarray(), dtype=torch.float32)
@@ -35,14 +39,22 @@ def get_prediction():
     # Make predictions
     with torch.no_grad():
         outputs = model(symptoms_tensor)
-        _, predicted = torch.max(outputs, 1)
+        
+        # Get the top n predictions
+        top_n_values, top_n_indices = torch.topk(outputs, num_predictions, dim=1)
     
     # Decode the predictions
-    predicted_labels = label_encoder_train.inverse_transform(predicted.numpy())
-    print(predicted_labels)
+    predicted_labels = label_encoder.inverse_transform(top_n_indices.numpy().flatten())
+    
+    # Calculate percentages
+    top_n_percentages = torch.nn.functional.softmax(top_n_values, dim=1).numpy().flatten() * 100
+    top_n_percentages = top_n_percentages.astype(float)
+    
+    # Prepare the response
+    predictions = [{'label': label, 'percentage': percentage} for label, percentage in zip(predicted_labels, top_n_percentages)]
     
     # Return prediction
-    return jsonify({'prediction': predicted_labels[0]})
+    return jsonify({'predictions': predictions})
 
 if __name__ == '__main__':
     app.run(debug=True)
