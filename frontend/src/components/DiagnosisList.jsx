@@ -1,6 +1,10 @@
 import React from 'react';
 import './DiagnosisList.css';
 
+const capitalizeLabel = (label) => {
+  return label.replace(/\b\w/g, char => char.toUpperCase());
+};
+
 const DiagnosisList = (props) => {
 
   return (
@@ -9,7 +13,7 @@ const DiagnosisList = (props) => {
       <div className="diagnoses">
         {props.diagnoses.map((diagnosis, index) => (
           <p key={index}>
-            {diagnosis.name}: {diagnosis.percentage}%
+            {capitalizeLabel(diagnosis.label)}: {diagnosis.percentage.toFixed(2)}%
           </p>
         ))}
       </div>

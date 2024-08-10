@@ -6,22 +6,36 @@ import Topbar from './components/Topbar';
 
 function App() {
 
-  // Remove these once connected to API
-  const placeholderDiagnoses = [
-    { name: 'Cold', percentage: 80 },
-    { name: 'Influenza', percentage: 5 },
-    { name: 'Pneumonia', percentage: 2 },
-  ];
-
   const [symptoms, setSymptoms] = useState('');
-  const [diagnoses, setDiagnoses] = useState(placeholderDiagnoses);
+  const [diagnoses, setDiagnoses] = useState([]);
 
   const handleInputChange = (event) => {
     setSymptoms(event.target.value);
   };
 
-  const handleSubmit = () => {
+  // Fetch predictions from the backend when the user submits symptoms
+  const handleSubmit = async () => {
     console.log('Submitted symptoms:', symptoms);
+
+    try {
+      const response = await fetch('http://localhost:5000/get_predictions', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            symptomDescription: symptoms,
+            topN: 3, // Get the top 3 diagnoses
+          }),
+      });
+
+      let responseJSON = await response.json();
+      let predictions = responseJSON.predictions;
+      setDiagnoses(predictions);
+    }
+    catch (error) {
+      console.error('Error fetching predictions:', error);
+    }
   };
 
   return (
