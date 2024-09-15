@@ -22,7 +22,7 @@ Preprocessing steps applied to the dataset include:
 - Extra characters such as commas, periods, and apostrophes were removed, as they do not provide much extra information for the models
 
 ### Metrics
-Since we wanted to work with the model's top labels, we decided to make 2 labels for evaluating 
+Since we wanted to work with the model's top labels, we decided to make 2 metrics for evaluating 
 the models:
 - Correctness Accuracy: How many times the model assigned the highest probability to the correct label
 - Inclusion Accuracy: How many times the model includes the correct label somewhere in its top k labels, in this case we used k = 3
