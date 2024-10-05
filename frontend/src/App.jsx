@@ -18,7 +18,7 @@ function App() {
     console.log('Submitted symptoms:', symptoms);
 
     try {
-      const response = await fetch('http://localhost:8080/get_predictions', {
+      const response = await fetch('http://0.0.0.0:8080/get_predictions', {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json',
