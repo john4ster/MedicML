@@ -1,12 +1,18 @@
 # app.py
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import pickle
 from neural_network import NeuralNetwork
 import torch
+import os
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='../frontend/dist', static_url_path='/')
 CORS(app)
+
+# Serve the static files from the React dist directory
+@app.route('/')
+def serve():
+    return send_from_directory(app.static_folder, 'index.html')
 
 # Load the pickled model
 with open('pickle-files/nn-tfidf-model.pkl', 'rb') as pickle_file:
@@ -19,13 +25,6 @@ with open('pickle-files/tfidf-vectorizer.pkl', 'rb') as vectorizer_file:
 # Load the pickled label encoder
 with open('pickle-files/label-encoder.pkl', 'rb') as encoder_file:
     label_encoder = pickle.load(encoder_file)
-
-
-
-# Route to home
-@app.route('/')
-def home():
-    return "Welcome to the MedicML API"
 
 # Route to get prediction given symptom description and the number of predictions to return
 @app.route('/get_predictions', methods=['POST'])
