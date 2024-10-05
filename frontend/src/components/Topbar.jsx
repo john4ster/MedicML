@@ -5,7 +5,7 @@ const Topbar = () => {
   
     return (
       <div className="topbar">
-        <h2 className="title">MedicalAssist - ML Medical Diagnosis</h2>
+        <h2 className="title">MedicML - ML Medical Diagnosis</h2>
       </div>
     );
 }

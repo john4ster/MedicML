@@ -45,7 +45,7 @@ function App() {
 
       <div className="appBody">
         <div className="symptomInput">
-          <h2>Enter Symptoms</h2>
+          <h2>Describe Symptoms</h2>
           <textarea
             className="symptomTextArea"
             value={symptoms}

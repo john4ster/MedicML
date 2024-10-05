@@ -1,4 +1,4 @@
-# MedicalAssist
+# MedicML
 
 The idea behind this project was to design a system that could take in a description of a 
 patient's symptoms and output a list of the top most likely diagnoses. This system could ideally 

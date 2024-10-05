@@ -25,7 +25,7 @@ with open('pickle-files/label-encoder.pkl', 'rb') as encoder_file:
 # Route to home
 @app.route('/')
 def home():
-    return "Welcome to the MedicalAssist API"
+    return "Welcome to the MedicML API"
 
 # Route to get prediction given symptom description and the number of predictions to return
 @app.route('/get_predictions', methods=['POST'])
