@@ -15,10 +15,8 @@ function App() {
 
   // Fetch predictions from the backend when the user submits symptoms
   const handleSubmit = async () => {
-    console.log('Submitted symptoms:', symptoms);
-
     try {
-      const response = await fetch('http://0.0.0.0:8080/get_predictions', {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/get_predictions`, {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json',
