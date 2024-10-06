@@ -41,3 +41,9 @@ Ultimately, the neural network using the TFIDF word representation did best and 
 final web app. 
 
 ![Model Graph](modelGraph.png)
+
+### Usage
+The MedicML web app is available to use at the following URL. Since it is hosted on a free hosting
+service it may take a few minutes to start up.
+
+https://medicml.onrender.com
